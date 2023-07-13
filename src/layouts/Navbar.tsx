@@ -79,13 +79,13 @@ const handleLogout=()=>{
                     </>
                     }
                     {user.email &&<>
-                    <Link to="/signup">
+                    
                     <DropdownMenuItem
                     onClick={handleLogout}
                     className="cursor-pointer">
                       logout
                     </DropdownMenuItem>
-                    </Link>
+                    
                     </>}
                     <DropdownMenuItem className="cursor-pointer">
                       Team
