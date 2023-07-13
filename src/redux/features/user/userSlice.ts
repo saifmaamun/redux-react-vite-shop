@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 interface IUser {
   user: {
-    email: null;
+    email: string | null;
   };
   isLoading: boolean;
   isError: boolean;
@@ -37,19 +37,22 @@ const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(createUser.pending, (state) => {
-      state.isLoading = true;
-      state.error = null;
-    });
-    builder.addCase(createUser.rejected, (state) => {
-      state.isLoading = false;
-      state.isError = true;
-    });
-    builder.addCase(createUser.fulfilled, (state, actions) => {
-      state.isError = false;
-      state.isLoading = false;
-      actions.payload;
-    });
+    builder
+      .addCase(createUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(createUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.user.email = null;
+        state.error = action.error.message!;
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.user.email = action.payload;
+        state.isError = false;
+        state.isLoading = false;
+      });
   },
 });
 
